@@ -2,12 +2,54 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Brand Kit Builder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Live Brand Kit Preview</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div id="app"></div>
+  <main>
+    <section class="editor-panel">
+      <h2>Customize Your Brand</h2>
+      <label>Brand name</label>
+      <input id="brandName" type="text" placeholder="e.g. Twenty Concepts" />
+
+      <label>Tagline</label>
+      <input id="tagline" type="text" placeholder="e.g. Glow naturally" />
+
+      <label>Brand color</label>
+      <input id="brandColor" type="color" value="#7b4de7" />
+
+      <button id="updateBtn">Update</button>
+    </section>
+
+    <section class="preview-grid">
+      <div class="card fade" id="logoPreview">
+        <div class="brand-name">Your Brand</div>
+        <div class="brand-tagline">Your tagline</div>
+        <div class="watermark">BRAND KIT · LIVE PREVIEW</div>
+      </div>
+
+      <div class="card fade" id="fontPreview">
+        <div class="font-initial">T</div>
+        <div class="brand-tagline">Your tagline</div>
+        <div class="watermark">Typography</div>
+      </div>
+
+      <div class="card fade" id="colorPreview">
+        <div class="palette-title">Color Palette</div>
+        <div class="color-dots">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        </div>
+        <div class="watermark">Brand Colors</div>
+      </div>
+
+      <div class="card fade" id="layoutPreview">
+        <div class="lines"><div></div><div></div><div></div></div>
+        <div class="watermark">Responsive Layout Preview</div>
+      </div>
+    </section>
+  </main>
+
   <script src="script.js"></script>
 </body>
 </html>
