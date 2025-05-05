@@ -1,0 +1,7 @@
+body {
+  margin: 0;
+  font-family: 'DM Sans', sans-serif;
+  background: radial-gradient(ellipse at center, #111118 0%, #0a0a0f 100%);
+  color: white;
+  overflow-x: hidden;
+}
