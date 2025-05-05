@@ -2,14 +2,238 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Brand Kit Preview</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Animated Brand Kit Preview</title>
+  <style>
+    :root {
+      --brand: #7b4de7;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: radial-gradient(circle at top left, #181623, #0c0b12);
+      color: white;
+      overflow-x: hidden;
+      padding: 60px 20px;
+    }
+    h1, p { text-align: center; }
+    h1 { font-size: 2.5rem; margin-bottom: 8px; }
+    p { color: #aaa; margin-bottom: 40px; }
+
+    .layout {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      justify-content: center;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .sidebar {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(12px);
+      padding: 32px;
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      width: 300px;
+      position: sticky;
+      top: 60px;
+      height: fit-content;
+    }
+    .sidebar label {
+      display: block;
+      margin-top: 18px;
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+    .sidebar input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      font-size: 16px;
+      background: rgba(255,255,255,0.1);
+      color: white;
+    }
+    .sidebar input[type="color"] {
+      height: 48px;
+      cursor: pointer;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 30px;
+      flex: 1;
+      position: relative;
+    }
+    .card {
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(16px);
+      border-radius: 20px;
+      padding: 24px;
+      text-align: center;
+      transform: translateY(60px);
+      opacity: 0;
+      animation: fadeInUp 0.8s ease forwards;
+    }
+    .card:nth-child(1) { animation-delay: 0.2s; }
+    .card:nth-child(2) { animation-delay: 0.4s; }
+    .card:nth-child(3) { animation-delay: 0.6s; }
+    .card:nth-child(4) { animation-delay: 0.8s; }
+    .card:hover {
+      transform: translateY(-4px) rotateX(1deg) rotateY(-1deg);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+    }
+
+    @keyframes fadeInUp {
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .brand-name {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--brand);
+    }
+    .tagline { font-size: 14px; color: #ccc; margin-top: 8px; }
+    .palette-dot {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      margin: 4px;
+      border-radius: 50%;
+      background: var(--brand);
+      animation: pulse 0.4s;
+    }
+
+    .lines div {
+      width: 100%;
+      height: 4px;
+      margin: 10px 0;
+      background: #aaa;
+      border-radius: 4px;
+    }
+
+    .watermark {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      font-size: 10px;
+      opacity: 0.3;
+    }
+
+    .blur-blob {
+      position: absolute;
+      top: -100px;
+      right: -100px;
+      width: 300px;
+      height: 300px;
+      background: var(--brand);
+      filter: blur(100px);
+      opacity: 0.2;
+      animation: blobMove 12s infinite ease-in-out alternate;
+      z-index: -1;
+    }
+
+    @keyframes blobMove {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-60px, 40px); }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.2); opacity: 0.5; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  </style>
 </head>
 <body>
-  <div id="app">
-    <!-- Brand kit app will be rendered here -->
+  <div class="blur-blob"></div>
+  <h1>Build your brand in real time</h1>
+  <p>Enter your brand name, pick a color, and see instant animated previews</p>
+
+  <div class="layout">
+    <div class="sidebar">
+      <label>Brand name</label>
+      <input type="text" id="brand" placeholder="e.g. Twenty Concepts" />
+
+      <label>Tagline</label>
+      <input type="text" id="tagline" placeholder="e.g. Glow naturally" />
+
+      <label>Primary Color</label>
+      <input type="color" id="color" value="#7b4de7" />
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="brand-name" id="brandPreview">Your Brand</div>
+        <div class="tagline" id="taglinePreview">Your tagline</div>
+        <div class="watermark">BRAND KIT · LIVE PREVIEW</div>
+      </div>
+      <div class="card">
+        <div style="font-size: 48px; font-weight: 600;" id="initialPreview">T</div>
+        <div class="tagline" id="fontTagline">Your tagline</div>
+        <div class="watermark">Typography</div>
+      </div>
+      <div class="card">
+        <div><strong>Color Palette</strong></div>
+        <div id="palettePreview">
+          <span class="palette-dot"></span>
+          <span class="palette-dot"></span>
+          <span class="palette-dot"></span>
+        </div>
+        <div class="watermark">Colors</div>
+      </div>
+      <div class="card">
+        <div class="lines">
+          <div></div><div></div><div></div>
+        </div>
+        <div class="watermark">Layout</div>
+      </div>
+    </div>
   </div>
-  <script src="script.js"></script>
+
+  <script>
+    const brand = document.getElementById('brand');
+    const tagline = document.getElementById('tagline');
+    const color = document.getElementById('color');
+
+    function update() {
+      const name = brand.value || 'Your Brand';
+      const sub = tagline.value || 'Your tagline';
+      const hex = color.value;
+
+      document.getElementById('brandPreview').textContent = name;
+      document.getElementById('taglinePreview').textContent = sub;
+      document.getElementById('fontTagline').textContent = sub;
+      document.getElementById('initialPreview').textContent = name.charAt(0).toUpperCase();
+      document.documentElement.style.setProperty('--brand', hex);
+
+      const palette = document.getElementById('palettePreview');
+      palette.innerHTML = '';
+      [0, 10, 30].forEach(p => {
+        const dot = document.createElement('span');
+        dot.className = 'palette-dot';
+        dot.style.background = shade(hex, p);
+        palette.appendChild(dot);
+      });
+    }
+
+    function shade(hex, percent) {
+      const f = parseInt(hex.slice(1),16);
+      const t = percent < 0 ? 0 : 255;
+      const p = Math.abs(percent)/100;
+      const R = f>>16, G = f>>8&0x00FF, B = f&0x0000FF;
+      return `rgb(${(1-p)*R+p*t},${(1-p)*G+p*t},${(1-p)*B+p*t})`;
+    }
+
+    brand.addEventListener('input', update);
+    tagline.addEventListener('input', update);
+    color.addEventListener('input', update);
+    update();
+  </script>
 </body>
 </html>
