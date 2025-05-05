@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live Brand Kit Preview</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'DM Sans', sans-serif;
+      background: linear-gradient(145deg, #0d0b18, #14101f);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px;
+    }
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    p.subtitle {
+      font-size: 16px;
+      color: #aaa;
+      margin-bottom: 40px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 40px;
+      width: 100%;
+      max-width: 1200px;
+    }
+
+    .panel {
+      background: #1e1b2b;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .input-group label {
+      display: block;
+      margin-top: 16px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .input-group input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      margin-top: 6px;
+      background: #e5efff;
+      color: #000;
+      font-size: 14px;
+    }
+
+    .input-group input[type="color"] {
+      width: 100%;
+      height: 40px;
+      border: none;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+    .preview-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 16px;
+      padding: 32px;
+      min-height: 160px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      backdrop-filter: blur(12px);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    .brand-name-preview {
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .tagline-preview {
+      margin-top: 8px;
+      font-size: 14px;
+      color: #bbb;
+    }
+
+    .palette-swatch {
+      width: 20px;
+      height: 20px;
+      background: white;
+      border-radius: 50%;
+      display: inline-block;
+      margin: 0 4px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Build your brand in real time</h1>
+  <p class="subtitle">Enter your brand name, pick a color, and see instant previews of your assets.</p>
+
+  <div class="grid">
+    <div class="panel">
+      <div class="input-group">
+        <label for="brand">Brand name</label>
+        <input type="text" id="brand" placeholder="e.g. Twenty Concepts" />
+      </div>
+      <div class="input-group">
+        <label for="tagline">Tagline</label>
+        <input type="text" id="tagline" placeholder="e.g. Glow naturally" />
+      </div>
+      <div class="input-group">
+        <label for="color">Brand color</label>
+        <input type="color" id="color" value="#7b4de7" />
+      </div>
+    </div>
+
+    <div class="preview-cards">
+      <div class="card">
+        <div class="brand-name-preview" id="brandPreview">Your Brand</div>
+        <div class="tagline-preview" id="taglinePreview">Your tagline</div>
+      </div>
+      <div class="card">
+        <div style="font-size: 32px;" id="fontPreview">T</div>
+        <div class="tagline-preview">Your tagline</div>
+      </div>
+      <div class="card">
+        <div style="font-weight: 600;">Color Palette</div>
+        <div>
+          <span class="palette-swatch" id="swatch1"></span>
+          <span class="palette-swatch" id="swatch2"></span>
+          <span class="palette-swatch" id="swatch3"></span>
+        </div>
+      </div>
+      <div class="card">
+        <div style="width: 60%; height: 2px; background: #bbb; margin: 8px auto;"></div>
+        <div style="width: 50%; height: 2px; background: #bbb; margin: 8px auto;"></div>
+        <div style="width: 40%; height: 2px; background: #bbb; margin: 8px auto;"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const brandInput = document.getElementById('brand');
+    const taglineInput = document.getElementById('tagline');
+    const colorInput = document.getElementById('color');
+
+    const brandPreview = document.getElementById('brandPreview');
+    const taglinePreview = document.getElementById('taglinePreview');
+    const fontPreview = document.getElementById('fontPreview');
+    const swatch1 = document.getElementById('swatch1');
+    const swatch2 = document.getElementById('swatch2');
+    const swatch3 = document.getElementById('swatch3');
+
+    function updatePreviews() {
+      const brand = brandInput.value.trim() || 'Your Brand';
+      const tagline = taglineInput.value.trim() || 'Your tagline';
+      const color = colorInput.value || '#7b4de7';
+
+      brandPreview.textContent = brand;
+      taglinePreview.textContent = tagline;
+      fontPreview.style.color = color;
+      brandPreview.style.color = color;
+
+      swatch1.style.backgroundColor = color;
+      swatch2.style.backgroundColor = lightenColor(color, 20);
+      swatch3.style.backgroundColor = lightenColor(color, 40);
+    }
+
+    function lightenColor(hex, percent) {
+      const num = parseInt(hex.replace('#', ''), 16);
+      let r = (num >> 16) + percent;
+      let g = ((num >> 8) & 0x00FF) + percent;
+      let b = (num & 0x0000FF) + percent;
+      r = (r < 255) ? r : 255;
+      g = (g < 255) ? g : 255;
+      b = (b < 255) ? b : 255;
+      return `rgb(${r}, ${g}, ${b})`;
+    }
+
+    brandInput.addEventListener('input', updatePreviews);
+    taglineInput.addEventListener('input', updatePreviews);
+    colorInput.addEventListener('input', updatePreviews);
+
+    updatePreviews();
+  </script>
+</body>
+</html>
